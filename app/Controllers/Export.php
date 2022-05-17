@@ -3,6 +3,10 @@
 namespace App\Controllers;
 
 use App\Models\ExportModel;
+use App\Models\PenjualanModel;
+use App\Models\PembelianModel;
+use App\Models\PembebananModel;
+use App\Models\LaporanModel;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
@@ -13,6 +17,10 @@ class Export extends BaseController
     {
         session_start();
         $this->ExportModel = new ExportModel();
+        $this->PenjualanModel = new PenjualanModel();
+        $this->PembelianModel = new PembelianModel();
+        $this->PembebananModel = new PembebananModel();
+        $this->LaporanModel = new LaporanModel();
         helper('rupiah');
         helper('waktu');
     }
@@ -109,26 +117,152 @@ class Export extends BaseController
 
         $writer->save('php://output');
     }
+
+    public function laporanpnj()
+    {
+        if(!isset($_SESSION['nama'])){
+            return redirect()->to(base_url('home')); 
+        }
+        $penjualan = $this->PenjualanModel->getPenjualan($_POST['tahun'], $_POST['bulan']);
+        $data['bulan'] = $_POST['bulan'];
+        $data['tahun'] = $_POST['tahun'];
+        $spreadsheet = new Spreadsheet();
+        $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('A1', 'ID Penjualan')
+            ->setCellValue('B1', 'Tanggal')
+            ->setCellValue('C1', 'Pelanggan')
+            ->setCellValue('D1', 'Total Transaksi');
+
+        $column = 2;
+
+        foreach ($penjualan as $row) {
+            $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('A'.$column, $row->id_transaksi)
+            ->setCellValue('B'.$column, $row->tanggal)
+            ->setCellValue('C'.$column, $row->nm_pelanggan)
+            ->setCellValue('D'.$column, rupiah($row->total));
+
+            $column++;
+        }
+        $writer = new Xlsx($spreadsheet);
+        $fileName = 'Data Penjualan';
+
+        // Redirect hasil generate xlsx ke web client
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=' . $fileName . '.xlsx');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+    }
+
+    public function laporanpmb()
+    {
+        if(!isset($_SESSION['nama'])){
+            return redirect()->to(base_url('home')); 
+        }
+        $pembelian = $this->PembelianModel->getPembelian($_POST['tahun'], $_POST['bulan']);
+        $data['bulan'] = $_POST['bulan'];
+        $data['tahun'] = $_POST['tahun'];
+        $spreadsheet = new Spreadsheet();
+        $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('A1', 'ID Penjualan')
+            ->setCellValue('B1', 'Tanggal')
+            ->setCellValue('C1', 'Pemasok')
+            ->setCellValue('D1', 'Total Transaksi');
+
+        $column = 2;
+        foreach ($pembelian as $row) {
+            $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('A'.$column,$row->id_transaksi)
+            ->setCellValue('B'.$column,$row->tanggal)
+            ->setCellValue('C'.$column,$row->nm_pemasok)
+            ->setCellValue('D'.$column,rupiah($row->total));
+
+            $column++;
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        $fileName = 'Data Pembelian';
+
+        // Redirect hasil generate xlsx ke web client
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=' . $fileName . '.xlsx');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+    }
+
+    public function laporanbeban()
+    {
+        if(!isset($_SESSION['nama'])){
+            return redirect()->to(base_url('home')); 
+        }
+        $pembebanan = $this->PembebananModel->getPembebanan($_POST['tahun'], $_POST['bulan']);
+        $data['bulan'] = $_POST['bulan'];
+        $data['tahun'] = $_POST['tahun'];
+        $spreadsheet = new Spreadsheet();
+        $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('A1', 'ID Pembebanan')
+            ->setCellValue('B1', 'Keterangan')
+            ->setCellValue('C1', 'Tanggal')
+            ->setCellValue('D1', 'Biaya');
+        
+        $column = 2;
+
+        foreach ($pembebanan as $row) {
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue('A'.$column,$row->id_transaksi)
+                ->setCellValue('B'.$column,$row->nama)
+                ->setCellValue('C'.$column,substr($row->waktu,0,10))
+                ->setCellValue('D'.$column,rupiah($row->biaya));
+            $column++;
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        $fileName = 'Data Pembebanan';
+
+        // Redirect hasil generate xlsx ke web client
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=' . $fileName . '.xlsx');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+    }
+
+    public function laporanjurnal()
+    {
+        if (!isset($_SESSION['nama'])) {
+            return redirect()->to(base_url('home'));
+        }
+        $jurnal = $this->LaporanModel->getJurnalUmum($_POST['tahun'], $_POST['bulan']);
+        $data['bulan'] = $_POST['bulan'];
+        $data['tahun'] = $_POST['tahun'];
+        $spreadsheet = new Spreadsheet();
+        $spreadsheet->setActiveSheetIndex(0)
+        
+    }
+
     public function pdfbb()
     {
         if (!isset($_SESSION['nama'])) {
             return redirect()->to(base_url('home'));
         }
-        $data['jurnal'] = $this->LaporanModel->getJurnalUmum($_POST['tahun'], $_POST['bulan']);
+        $data['jurnal'] = $this->ExportModel->getJurnalUmum($_POST['tahun'], $_POST['bulan']);
 
         $akun = $_POST['akun'];
         //explode untuk mendapatkan kode akun dan nama akun kode_akun|nama_akun 
         $akuncacah = explode("|", $akun);
         // print_r($akuncacah);
-
+        // var_dump($akun);
+        // die;
 
         $data['bulan'] = $_POST['bulan'];
         $data['tahun'] = $_POST['tahun'];
         $data['kodeakun'] = $akuncacah[0];
         $data['namaakun'] = $akuncacah[1];
-        $data['bukubesar'] = $this->LaporanModel->getBukuBesar($data['tahun'], $data['bulan'], $data['kodeakun']);
-        $data['saldoawal'] = $this->LaporanModel->getSaldoAwal($data['bulan'], $data['tahun'], $data['kodeakun']);
-        $data['posisisaldonormal'] = $this->LaporanModel->getPosisiSaldoNormal($data['kodeakun']);
+        $data['bukubesar'] = $this->ExportModel->getBukuBesar($data['tahun'], $data['bulan'], $data['kodeakun']);
+        $data['saldoawal'] = $this->ExportModel->getSaldoAwal($data['bulan'], $data['tahun'], $data['kodeakun']);
+        $data['posisisaldonormal'] = $this->ExportModel->getPosisiSaldoNormal($data['kodeakun']);
         $dompdf = new Dompdf();
         $dompdf->loadHtml(view('pdf/template-bb', $data));
         $dompdf->setPaper('A4', 'portrait'); //ukuran kertas dan orientasi
@@ -136,5 +270,56 @@ class Export extends BaseController
         $dompdf->stream("laporan-bukubesar"); //nama file pdf
  
         return redirect()->to(base_url('Laporan/BukuBesar'));
+    }
+
+    public function pdfpnj()
+    {
+        if(!isset($_SESSION['nama'])){
+            return redirect()->to(base_url('home')); 
+        }
+        $data['penjualan'] = $this->PenjualanModel->getPenjualan($_POST['tahun'], $_POST['bulan']);
+        $data['bulan'] = $_POST['bulan'];
+        $data['tahun'] = $_POST['tahun'];
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml(view('pdf/template-pnj', $data));
+        $dompdf->setPaper('A4', 'portrait'); //ukuran kertas dan orientasi
+        $dompdf->render();
+        $dompdf->stream("laporan-pnj"); //nama file pdf
+ 
+        return redirect()->to(base_url('Penjualan/lihatpnj'));
+    }
+
+    public function pdfpmb()
+    {
+        if(!isset($_SESSION['nama'])){
+            return redirect()->to(base_url('home')); 
+        }
+        $data['pembelian'] = $this->PembelianModel->getPembelian($_POST['tahun'], $_POST['bulan']);
+        $data['bulan'] = $_POST['bulan'];
+        $data['tahun'] = $_POST['tahun'];
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml(view('pdf/template-pmb', $data));
+        $dompdf->setPaper('A4', 'portrait'); //ukuran kertas dan orientasi
+        $dompdf->render();
+        $dompdf->stream("laporan-pmb"); //nama file pdf
+ 
+        return redirect()->to(base_url('Pembelian/lihatpmb'));
+    }
+
+    public function pdfbeban()
+    {
+        if(!isset($_SESSION['nama'])){
+            return redirect()->to(base_url('home')); 
+        }
+        $data['pembebanan'] = $this->PembebananModel->getPembebanan($_POST['tahun'], $_POST['bulan']);
+        $data['bulan'] = $_POST['bulan'];
+        $data['tahun'] = $_POST['tahun'];
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml(view('pdf/template-beban', $data));
+        $dompdf->setPaper('A4', 'portrait'); //ukuran kertas dan orientasi
+        $dompdf->render();
+        $dompdf->stream("laporan-pembebanan"); //nama file pdf
+ 
+        return redirect()->to(base_url('Pembelian/lihatpmb'));
     }
 }

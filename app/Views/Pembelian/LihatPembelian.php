@@ -17,6 +17,19 @@
             </div> 
       <p>
 
+      <form action="<?= base_url('Export/laporanpmb') ?>" method="post">
+      <input type="hidden" name="bulan" value="<?= $bulan; ?>">
+      <input type="hidden" name="tahun" value="<?= $tahun; ?>">
+      <button type="submit" class="btn btn-success">Export Excel</button>
+      <br><br>
+      </form>
+      <form action="<?= base_url('Export/pdfpmb') ?>" method="post">
+        <input type="hidden" name="bulan" value="<?= $bulan; ?>">
+        <input type="hidden" name="tahun" value="<?= $tahun; ?>">
+        <button type="submit" class="btn btn-danger">Export PDF</button>
+        <br><br>
+      </form>
+
       <div class="table-responsive">
         <table class="table table-bordered" table-sm>
           <thead>
