@@ -17,7 +17,14 @@
     </div>
   </div>
   <p>
-
+  <form action="<?= base_url('Export/laporanbb') ?>" method="post">
+    <input type="hidden" name="bulan" value="<?= $bulan; ?>">
+    <input type="hidden" name="tahun" value="<?= $tahun; ?>">
+    <input type="hidden" name="akun" value="<?= $kodeakun ?>">
+    <button type="submit" class="btn btn-success">Export Excel</button>
+    <a href="<?= base_url('Export/pdfbb') ?>" class="btn btn-danger">Export PDF</a>
+    <br><br>
+  </form>
   <div class="table-responsive">
     <table class="table table-bordered" table-sm">
       <thead>
@@ -83,13 +90,13 @@
               <?php
               //jika posisi saldo normal ada di debet, maka di tambah dan ditampilkan ke posisi debet
               if ($posisisaldonormal == 'd') {
-                $saldo_debet = $saldo_debet  + $row->nominal;
-                echo "<td style='text-align:right'>" . rupiah($saldo_debet) . "</td>";
+                $saldo_debet = $saldo_debet  - $row->nominal;
                 echo "<td style='text-align:right'>" . rupiah($saldo_kredit) . "</td>";
+                echo "<td style='text-align:right'>" . rupiah($saldo_debet) . "</td>";
               } else {
-                $saldo_kredit = $saldo_kredit  - $row->nominal;
-                echo "<td style='text-align:right'>" . rupiah($saldo_kredit) . "</td>";
+                $saldo_kredit = $saldo_kredit  + $row->nominal;
                 echo "<td style='text-align:right'>" . rupiah($saldo_debet) . "</td>";
+                echo "<td style='text-align:right'>" . rupiah($saldo_kredit) . "</td>";
               }
             } else {
               $kr = $kr + $row->nominal;
@@ -103,8 +110,8 @@
                 echo "<td style='text-align:right'>" . rupiah($saldo_kredit) . "</td>";
               } else {
                 $saldo_kredit = $saldo_kredit  + $row->nominal;
-                echo "<td style='text-align:right'>" . rupiah($saldo_debet) . "</td>";
                 echo "<td style='text-align:right'>" . rupiah($saldo_kredit) . "</td>";
+                echo "<td style='text-align:right'>" . rupiah($saldo_debet) . "</td>";
               }
             }
             ?>
