@@ -17,20 +17,6 @@
     </div>
   </div>
   <p>
-  <form action="<?= base_url('Export/laporanbb') ?>" method="post">
-    <input type="hidden" name="bulan" value="<?= $bulan; ?>">
-    <input type="hidden" name="tahun" value="<?= $tahun; ?>">
-    <input type="hidden" name="akun" value="<?= $kodeakun ?>">
-    <button type="submit" class="btn btn-success">Export Excel</button>
-    <br><br>
-  </form>
-  <form action="<?= base_url('Export/pdfbb') ?>" method="post">
-    <input type="hidden" name="bulan" value="<?= $bulan; ?>">
-    <input type="hidden" name="tahun" value="<?= $tahun; ?>">
-    <input type="hidden" name="akun" value="<?= $kodeakun . "|" . $namaakun ?>">
-    <button type="submit" class="btn btn-danger">Export PDF</button>
-    <br><br>
-  </form>
   <div class="table-responsive">
     <table class="table table-bordered" table-sm">
       <thead>

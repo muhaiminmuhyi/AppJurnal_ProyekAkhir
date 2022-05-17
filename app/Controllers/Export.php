@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\ExportModel;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Dompdf\Dompdf;
 
 class Export extends BaseController
 {
@@ -107,5 +108,33 @@ class Export extends BaseController
         header('Cache-Control: max-age=0');
 
         $writer->save('php://output');
+    }
+    public function pdfbb()
+    {
+        if (!isset($_SESSION['nama'])) {
+            return redirect()->to(base_url('home'));
+        }
+        $data['jurnal'] = $this->LaporanModel->getJurnalUmum($_POST['tahun'], $_POST['bulan']);
+
+        $akun = $_POST['akun'];
+        //explode untuk mendapatkan kode akun dan nama akun kode_akun|nama_akun 
+        $akuncacah = explode("|", $akun);
+        // print_r($akuncacah);
+
+
+        $data['bulan'] = $_POST['bulan'];
+        $data['tahun'] = $_POST['tahun'];
+        $data['kodeakun'] = $akuncacah[0];
+        $data['namaakun'] = $akuncacah[1];
+        $data['bukubesar'] = $this->LaporanModel->getBukuBesar($data['tahun'], $data['bulan'], $data['kodeakun']);
+        $data['saldoawal'] = $this->LaporanModel->getSaldoAwal($data['bulan'], $data['tahun'], $data['kodeakun']);
+        $data['posisisaldonormal'] = $this->LaporanModel->getPosisiSaldoNormal($data['kodeakun']);
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml(view('pdf/template-bb', $data));
+        $dompdf->setPaper('A4', 'portrait'); //ukuran kertas dan orientasi
+        $dompdf->render();
+        $dompdf->stream("laporan-bukubesar"); //nama file pdf
+ 
+        return redirect()->to(base_url('Laporan/BukuBesar'));
     }
 }
