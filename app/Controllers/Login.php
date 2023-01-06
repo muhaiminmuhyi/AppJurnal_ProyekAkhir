@@ -1,13 +1,11 @@
 <?php
-
 namespace App\Controllers;
 use App\Models\AkunModel;
 
-class Home extends BaseController
+class Login extends BaseController
 {
 	public function __construct()
     {
-		session_start();
         //load kelas AkunModel
         $this->akunmodel = new AkunModel();
     }
@@ -18,7 +16,7 @@ class Home extends BaseController
 	}
 	public function ceklogin()
 	{
-		
+		$session = session();
 		$hasil = $this->akunmodel->cekUsernamePwd();
 
 		//iterasi hasil query
@@ -37,24 +35,29 @@ class Home extends BaseController
 			{
 				$lastlogin = $row->last_login;
 			}
-			//ciptakan sesi untuk user
-			$_SESSION['nama'] = $_POST['inputUsername'];
-			$_SESSION['lastlogin'] = $lastlogin;
-			echo view('HeaderBootstrap');
-			echo view('SidebarBootstrap');
-			echo view('BodyBootstrap');
+			$ses_data = [
+				'nama' => $_POST['inputUsername'],
+				'lastlogin' => $lastlogin
+			];
+			$session->set($ses_data);
+			return redirect()->to('/dashboard');
+			// $_SESSION['nama'] = $_POST['inputUsername'];
+			// $_SESSION['lastlogin'] = $lastlogin;
+			// echo view('HeaderBootstrap');
+			// echo view('SidebarBootstrap');
+			// echo view('BodyBootstrap');
 		}else{
 			//jika tidak sama maka dikembalikan ke ceklogin
 			$data['pesan'] = 'Pasangan username dan password tidak tepat';
 			
-return view('login', $data);
+			return view('login', $data);
 		}
 	} 
 	//destroy session ketika logout
 	public function logout()
 	{
-        //$this->session->destroy();
-		session_destroy();
-		return redirect()->to(base_url('home')); 
+        $session = session();
+		$session->destroy();
+		return redirect()->to('/login'); 
 	}
 }
