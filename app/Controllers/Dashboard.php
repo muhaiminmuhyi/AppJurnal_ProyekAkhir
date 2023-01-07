@@ -8,6 +8,7 @@ class Dashboard extends BaseController
         echo view('HeaderBootstrap');
 		echo view('SidebarBootstrap');
 		echo view('BodyBootstrap');
+        echo view('FooterBootstrap');
     }
 }
 ?>
