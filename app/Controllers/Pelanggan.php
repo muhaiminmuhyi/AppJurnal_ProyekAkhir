@@ -7,6 +7,7 @@ class Pelanggan extends BaseController
 {
 	public function __construct()
     {
+        $session = session();
         //load kelas PelangganModel
         $this->PelangganModel = new PelangganModel();
     }
@@ -22,6 +23,8 @@ class Pelanggan extends BaseController
             echo view('HeaderBootstrap');
             echo view('SidebarBootstrap');
             echo view('Pelanggan/InputPelanggan');
+            echo view('FooterBootstrap');
+
         }
         else{
             $validation =  \Config\Services::validation();
@@ -61,13 +64,15 @@ class Pelanggan extends BaseController
                 echo view('Pelanggan/InputPelanggan',[
                     'validation' => $this->validator,
                 ]);
+                echo view('FooterBootstrap');
+
 
             }else{
                 //blok ini adalah blok jika sukses, yaitu panggil method insertData()
                 //panggil metod dari kosan model untuk diinputkan datanya
                 
                 $hasil = $this->PelangganModel->insertData();
-                if($hasil->connID->affected_rows>0){
+                if($hasil == true){
                     ?>
                     <script type="text/javascript">
                         alert("Data berhasil ditambahkan");
@@ -78,6 +83,8 @@ class Pelanggan extends BaseController
                 echo view('HeaderBootstrap');
                 echo view('SidebarBootstrap');
                 echo view('Pelanggan/ListPelanggan', $data);
+                echo view('FooterBootstrap');
+
             }
         }
 	}
@@ -88,6 +95,7 @@ class Pelanggan extends BaseController
         echo view('HeaderBootstrap');
         echo view('SidebarBootstrap');
         echo view('Pelanggan/EditPelanggan', $data);
+        echo view('FooterBootstrap');
     }
 
     public function editPelangganproses(){
@@ -131,13 +139,15 @@ class Pelanggan extends BaseController
                 'validation' => $this->validator,
                 'Pelanggan' => $this->PelangganModel->editData($id_pelanggan)
             ]);
+            echo view('FooterBootstrap');
+
 
         }
         else
         {
             //panggil metod dari Pelanggan model untuk diinputkan datanya
             $hasil = $this->PelangganModel->updateData();
-            if($hasil->connID->affected_rows>0){
+            if($hasil == true){
                 ?>
                 <script type="text/javascript">
                     alert("Berhasil mengubah data");
@@ -148,6 +158,8 @@ class Pelanggan extends BaseController
             echo view('HeaderBootstrap');
             echo view('SidebarBootstrap');
             echo view('Pelanggan/ListPelanggan', $data);
+            echo view('FooterBootstrap');
+
         }    
     }
 
@@ -164,5 +176,7 @@ class Pelanggan extends BaseController
         echo view('HeaderBootstrap');
         echo view('SidebarBootstrap');
         echo view('Pelanggan/ListPelanggan', $data);
+        echo view('FooterBootstrap');
+
     }
 }

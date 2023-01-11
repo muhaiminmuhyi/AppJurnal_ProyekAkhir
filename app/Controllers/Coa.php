@@ -8,6 +8,7 @@ class Coa extends BaseController
 	public function __construct()
     {
         //load kelas CoaModel
+        $session = session();
         $this->CoaModel = new CoaModel();
     }
 
@@ -20,6 +21,7 @@ class Coa extends BaseController
             echo view('HeaderBootstrap');
             echo view('SidebarBootstrap');
             echo view('Coa/InputCoa');
+            echo view('FooterBootstrap');
         }
         else{
             $validation =  \Config\Services::validation();
@@ -49,13 +51,14 @@ class Coa extends BaseController
                 echo view('Coa/InputCoa',[
                     'validation' => $this->validator,
                 ]);
+                echo view('FooterBootstrap');
 
             }else{
                 //blok ini adalah blok jika sukses, yaitu panggil method insertData()
                 //panggil metod dari kosan model untuk diinputkan datanya
                 
                 $hasil = $this->CoaModel->insertData();
-                if($hasil->connID->affected_rows>0){
+                if($hasil == true){
                     ?>
                     <script type="text/javascript">
                         alert("Data berhasil ditambahkan");
@@ -66,6 +69,7 @@ class Coa extends BaseController
                 echo view('HeaderBootstrap');
                 echo view('SidebarBootstrap');
                 echo view('Coa/ListCoa', $data);
+                echo view('FooterBootstrap');
             }
         }
 	}
@@ -77,6 +81,7 @@ class Coa extends BaseController
         echo view('HeaderBootstrap');
         echo view('SidebarBootstrap');
         echo view('Coa/EditCoa', $data);
+        echo view('FooterBootstrap');
     }
 
     public function editCoaproses(){
@@ -106,13 +111,14 @@ class Coa extends BaseController
                 'validation' => $this->validator,
                 'coa' => $this->CoaModel->editData($kode_coa)
             ]);
+            echo view('FooterBootstrap');
 
         }
         else
         {
             //panggil metod dari Coa model untuk diinputkan datanya
             $hasil = $this->CoaModel->updateData();
-            if($hasil->connID->affected_rows>0){
+            if($hasil == true){
                 ?>
                 <script type="text/javascript">
                     alert("Berhasil mengubah data");
@@ -123,6 +129,7 @@ class Coa extends BaseController
             echo view('HeaderBootstrap');
             echo view('SidebarBootstrap');
             echo view('Coa/ListCoa', $data);
+            echo view('FooterBootstrap');
         }    
     }
 
@@ -139,5 +146,6 @@ class Coa extends BaseController
         echo view('HeaderBootstrap');
         echo view('SidebarBootstrap');
         echo view('Coa/ListCoa', $data);
+        echo view('FooterBootstrap');
     }
 }

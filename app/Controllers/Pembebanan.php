@@ -7,7 +7,7 @@ class Pembebanan extends BaseController
 {
     public function __construct()
     {
-        session_start();
+        $session = session();
         $this->PembebananModel = new PembebananModel();
         helper('rupiah');
     }
@@ -25,6 +25,7 @@ class Pembebanan extends BaseController
             echo view('HeaderBootstrap');
             echo view('SidebarBootstrap');
             echo view('Pembebanan/inputBeban', $data);
+            echo view('FooterBootstrap');
         }else{
             $validation =  \Config\Services::validation();
             if (! $this->validate(
@@ -53,10 +54,11 @@ class Pembebanan extends BaseController
                     'validation' => $this->validator,
                     'pembebanan' => $this->PembebananModel->getBebanData()
                 ]);
+                echo view('FooterBootstrap');
             }else{
                 //maka input database
                 $hasil = $this->PembebananModel->inputBeban();
-                if($hasil->connID->affected_rows>0){
+                if($hasil == true){
                     ?>
                     <script type="text/javascript">
                         alert("Sukses menambahkan beban");
@@ -68,6 +70,7 @@ class Pembebanan extends BaseController
                 echo view('HeaderBootstrap');
                 echo view('SidebarBootstrap');
                 echo view('Pembebanan/ListBeban', $data);
+                echo view('FooterBootstrap');
             }
         }
 
@@ -79,6 +82,7 @@ class Pembebanan extends BaseController
         echo view('HeaderBootstrap');
         echo view('SidebarBootstrap');
         echo view('pembebanan/ListBeban', $data);
+        echo view('FooterBootstrap');
     }
 
     public function laporanbeban(){
@@ -89,6 +93,7 @@ class Pembebanan extends BaseController
         echo view('HeaderBootstrap');
         echo view('SidebarBootstrap');
         echo view('Pembebanan/Pembebanan', $data);
+        echo view('FooterBootstrap');
     }
 
     //json encode untuk list bulan
@@ -111,5 +116,6 @@ class Pembebanan extends BaseController
         echo view('HeaderBootstrap');
         echo view('SidebarBootstrap');
         echo view('Pembebanan/LihatPembebanan', $data);
+        echo view('FooterBootstrap');
     }
 }

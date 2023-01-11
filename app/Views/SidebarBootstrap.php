@@ -110,7 +110,7 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="<?= base_url('dashboard/index') ?>" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Dashboard
@@ -174,13 +174,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="<?= base_url('penjual/ListJual') ?>" class="nav-link">
+                <a href="<?= base_url('penjualan/ListJual') ?>" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Penjualan</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="<?= base_url('pembeli/ListBeli') ?>" class="nav-link">
+                <a href="<?= base_url('pembelian/ListBeli') ?>" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Pembelian</p>
                 </a>

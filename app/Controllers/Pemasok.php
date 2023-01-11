@@ -7,6 +7,7 @@ class Pemasok extends BaseController
 {
 	public function __construct()
     {
+        $session = session();
         //load kelas PemasokModel
         $this->PemasokModel = new PemasokModel();
     }
@@ -22,6 +23,7 @@ class Pemasok extends BaseController
             echo view('HeaderBootstrap');
             echo view('SidebarBootstrap');
             echo view('Pemasok/InputPemasok');
+            echo view('FooterBootstrap');
         }
         else{
             $validation =  \Config\Services::validation();
@@ -61,13 +63,15 @@ class Pemasok extends BaseController
                 echo view('Pemasok/InputPemasok',[
                     'validation' => $this->validator,
                 ]);
+                echo view('FooterBootstrap');
+
 
             }else{
                 //blok ini adalah blok jika sukses, yaitu panggil method insertData()
                 //panggil metod dari kosan model untuk diinputkan datanya
                 
                 $hasil = $this->PemasokModel->insertData();
-                if($hasil->connID->affected_rows>0){
+                if($hasil == true){
                     ?>
                     <script type="text/javascript">
                         alert("Data berhasil ditambahkan");
@@ -78,6 +82,7 @@ class Pemasok extends BaseController
                 echo view('HeaderBootstrap');
                 echo view('SidebarBootstrap');
                 echo view('Pemasok/ListPemasok', $data);
+                echo view('FooterBootstrap');
             }
         }
 	}
@@ -88,6 +93,7 @@ class Pemasok extends BaseController
         echo view('HeaderBootstrap');
         echo view('SidebarBootstrap');
         echo view('Pemasok/EditPemasok', $data);
+        echo view('FooterBootstrap');
     }
 
     public function editPemasokproses(){
@@ -131,13 +137,13 @@ class Pemasok extends BaseController
                 'validation' => $this->validator,
                 'pemasok' => $this->PemasokModel->editData($id_pemasok)
             ]);
-
+            echo view('FooterBootstrap');
         }
         else
         {
             //panggil metod dari Pemasok model untuk diinputkan datanya
             $hasil = $this->PemasokModel->updateData();
-            if($hasil->connID->affected_rows>0){
+            if($hasil == true){
                 ?>
                 <script type="text/javascript">
                     alert("Berhasil mengubah data");
@@ -148,6 +154,7 @@ class Pemasok extends BaseController
             echo view('HeaderBootstrap');
             echo view('SidebarBootstrap');
             echo view('Pemasok/ListPemasok', $data);
+            echo view('FooterBootstrap');
         }    
     }
 
@@ -164,5 +171,6 @@ class Pemasok extends BaseController
         echo view('HeaderBootstrap');
         echo view('SidebarBootstrap');
         echo view('Pemasok/ListPemasok', $data);
+        echo view('FooterBootstrap');
     }
 }

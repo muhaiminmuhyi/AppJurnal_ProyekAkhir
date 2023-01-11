@@ -7,7 +7,7 @@ class Penjualan extends BaseController
 {
     public function __construct()
     {
-        session_start();
+        $session = session();
         $this->PenjualanModel = new PenjualanModel();
         helper('rupiah');
         $this->db = db_connect();
@@ -44,6 +44,7 @@ class Penjualan extends BaseController
             echo view('HeaderBootstrap');
             echo view('SidebarBootstrap');
             echo view('Penjualan/inputJual', $data);
+            echo view('FooterBootstrap');
         }else{
             $validation =  \Config\Services::validation();
             if (! $this->validate(
@@ -71,7 +72,7 @@ class Penjualan extends BaseController
             }else{
                 //maka input database
                 $hasil = $this->PenjualanModel->inputJual();
-                if($hasil->connID->affected_rows>0){
+                if($hasil == true){
                     ?>
                     <script type="text/javascript">
                         alert("Sukses menambahkan Penjualan");
@@ -83,6 +84,7 @@ class Penjualan extends BaseController
                 echo view('HeaderBootstrap');
                 echo view('SidebarBootstrap');
                 echo view('Penjualan/ListJual', $data);
+                echo view('FooterBootstrap');
             }
         }
 
@@ -99,6 +101,7 @@ class Penjualan extends BaseController
         echo view('HeaderBootstrap');
         echo view('SidebarBootstrap');
         echo view('Penjualan/ListJual', $data);
+        echo view('FooterBootstrap');
     }
 
     public function detail_pnj()
@@ -207,6 +210,7 @@ class Penjualan extends BaseController
         echo view('HeaderBootstrap');
         echo view('SidebarBootstrap');
         echo view('Penjualan/Penjualan', $data);
+        echo view('FooterBootstrap');
     }
 
     //json encode untuk list bulan
@@ -229,6 +233,7 @@ class Penjualan extends BaseController
         echo view('HeaderBootstrap');
         echo view('SidebarBootstrap');
         echo view('Penjualan/LihatPenjualan', $data);
+        echo view('FooterBootstrap');
     }
 
 }

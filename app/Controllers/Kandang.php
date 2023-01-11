@@ -7,6 +7,7 @@ class Kandang extends BaseController
 {
 	public function __construct()
     {
+        $session = session();
         //load kelas KandangModel
         $this->KandangModel = new KandangModel();
     }
@@ -21,6 +22,7 @@ class Kandang extends BaseController
             echo view('HeaderBootstrap');
             echo view('SidebarBootstrap');
             echo view('Kandang/InputKandang');
+            echo view('FooterBootstrap');
         }
         else{
             $validation =  \Config\Services::validation();
@@ -47,13 +49,14 @@ class Kandang extends BaseController
                 echo view('Kandang/InputKandang',[
                     'validation' => $this->validator,
                 ]);
+                echo view('FooterBootstrap');
 
             }else{
                 //blok ini adalah blok jika sukses, yaitu panggil method insertData()
                 //panggil metod dari kosan model untuk diinputkan datanya
                 
                 $hasil = $this->KandangModel->insertData();
-                if($hasil->connID->affected_rows>0){
+                if($hasil == true){
                     ?>
                     <script type="text/javascript">
                         alert("Data berhasil ditambahkan");
@@ -64,6 +67,7 @@ class Kandang extends BaseController
                 echo view('HeaderBootstrap');
                 echo view('SidebarBootstrap');
                 echo view('Kandang/ListKandang', $data);
+                echo view('FooterBootstrap');
             }
         }
 	}
@@ -74,6 +78,7 @@ class Kandang extends BaseController
         echo view('HeaderBootstrap');
         echo view('SidebarBootstrap');
         echo view('Kandang/EditKandang', $data);
+        echo view('FooterBootstrap');
     }
 
     public function editKandangproses(){
@@ -102,13 +107,15 @@ class Kandang extends BaseController
                 'validation' => $this->validator,
                 'kandang' => $this->KandangModel->editData($id_kandang)
             ]);
+            echo view('FooterBootstrap');
+
 
         }
         else
         {
             //panggil metod dari Kandang model untuk diinputkan datanya
             $hasil = $this->KandangModel->updateData();
-            if($hasil->connID->affected_rows>0){
+            if($hasil == true){
                 ?>
                 <script type="text/javascript">
                     alert("Berhasil mengubah data");
@@ -119,6 +126,8 @@ class Kandang extends BaseController
             echo view('HeaderBootstrap');
             echo view('SidebarBootstrap');
             echo view('Kandang/ListKandang', $data);
+            echo view('FooterBootstrap');
+
         }    
     }
 
@@ -135,5 +144,6 @@ class Kandang extends BaseController
         echo view('HeaderBootstrap');
         echo view('SidebarBootstrap');
         echo view('Kandang/ListKandang', $data);
+        echo view('FooterBootstrap');
     }
 }

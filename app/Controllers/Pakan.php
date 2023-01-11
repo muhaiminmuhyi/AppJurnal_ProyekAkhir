@@ -7,6 +7,7 @@ class Pakan extends BaseController
 {
 	public function __construct()
     {
+        $session = session();
         //load kelas PakanModel
         $this->PakanModel = new PakanModel();
         helper('rupiah');
@@ -24,6 +25,7 @@ class Pakan extends BaseController
             echo view('HeaderBootstrap');
             echo view('SidebarBootstrap');
             echo view('Pakan/InputPakan');
+            echo view('FooterBootstrap');
         }
         else{
             $validation =  \Config\Services::validation();
@@ -62,13 +64,14 @@ class Pakan extends BaseController
                 echo view('Pakan/InputPakan',[
                     'validation' => $this->validator,
                 ]);
+                echo view('FooterBootstrap');
 
             }else{
                 //blok ini adalah blok jika sukses, yaitu panggil method insertData()
                 //panggil metod dari kosan model untuk diinputkan datanya
                 
                 $hasil = $this->PakanModel->insertData();
-                if($hasil->connID->affected_rows>0){
+                if($hasil == true){
                     ?>
                     <script type="text/javascript">
                         alert("Data berhasil ditambahkan");
@@ -79,6 +82,7 @@ class Pakan extends BaseController
                 echo view('HeaderBootstrap');
                 echo view('SidebarBootstrap');
                 echo view('Pakan/ListPakan', $data);
+                echo view('FooterBootstrap');
             }
         }
 	}
@@ -89,6 +93,7 @@ class Pakan extends BaseController
         echo view('HeaderBootstrap');
         echo view('SidebarBootstrap');
         echo view('Pakan/EditPakan', $data);
+        echo view('FooterBootstrap');
     }
 
     public function editPakanproses(){
@@ -132,13 +137,14 @@ class Pakan extends BaseController
                 'validation' => $this->validator,
                 'pakan' => $this->PakanModel->editData($id_pakan)
             ]);
+            echo view('FooterBootstrap');
 
         }
         else
         {
             //panggil metod dari Pakan model untuk diinputkan datanya
             $hasil = $this->PakanModel->updateData();
-            if($hasil->connID->affected_rows>0){
+            if($hasil == true){
                 ?>
                 <script type="text/javascript">
                     alert("Berhasil mengubah data");
@@ -149,6 +155,7 @@ class Pakan extends BaseController
             echo view('HeaderBootstrap');
             echo view('SidebarBootstrap');
             echo view('Pakan/ListPakan', $data);
+            echo view('FooterBootstrap');
         }    
     }
 
@@ -165,5 +172,6 @@ class Pakan extends BaseController
         echo view('HeaderBootstrap');
         echo view('SidebarBootstrap');
         echo view('Pakan/ListPakan', $data);
+        echo view('FooterBootstrap');
     }
 }

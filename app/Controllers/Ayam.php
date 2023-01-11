@@ -7,6 +7,7 @@ class Ayam extends BaseController
 {
 	public function __construct()
     {
+        $session = session();
         //load kelas AyamModel
         $this->AyamModel = new AyamModel();
     }
@@ -22,6 +23,7 @@ class Ayam extends BaseController
             echo view('HeaderBootstrap');
             echo view('SidebarBootstrap');
             echo view('Ayam/InputAyam');
+            echo view('FooterBootstrap');
         }
         else{
             $validation =  \Config\Services::validation();
@@ -57,13 +59,14 @@ class Ayam extends BaseController
                 echo view('Ayam/InputAyam',[
                     'validation' => $this->validator,
                 ]);
+                echo view('FooterBootstrap');
 
             }else{
                 //blok ini adalah blok jika sukses, yaitu panggil method insertData()
                 //panggil metod dari kosan model untuk diinputkan datanya
                 
                 $hasil = $this->AyamModel->insertData();
-                if($hasil->connID->affected_rows>0){
+                if($hasil == true){
                     ?>
                     <script type="text/javascript">
                         alert("Data berhasil ditambahkan");
@@ -74,6 +77,7 @@ class Ayam extends BaseController
                 echo view('HeaderBootstrap');
                 echo view('SidebarBootstrap');
                 echo view('Ayam/ListAyam', $data);
+                echo view('FooterBootstrap');
             }
         }
 	}
@@ -84,6 +88,7 @@ class Ayam extends BaseController
         echo view('HeaderBootstrap');
         echo view('SidebarBootstrap');
         echo view('Ayam/EditAyam', $data);
+        echo view('FooterBootstrap');
     }
 
     public function editAyamproses(){
@@ -122,13 +127,14 @@ class Ayam extends BaseController
                 'validation' => $this->validator,
                 'ayam' => $this->AyamModel->editData($id_ayam)
             ]);
+            echo view('FooterBootstrap');
 
         }
         else
         {
             //panggil metod dari Ayam model untuk diinputkan datanya
             $hasil = $this->AyamModel->updateData();
-            if($hasil->connID->affected_rows>0){
+            if($hasil == true){
                 ?>
                 <script type="text/javascript">
                     alert("Berhasil mengubah data");
@@ -139,6 +145,7 @@ class Ayam extends BaseController
             echo view('HeaderBootstrap');
             echo view('SidebarBootstrap');
             echo view('Ayam/ListAyam', $data);
+            echo view('FooterBootstrap');
         }    
     }
 
@@ -155,5 +162,6 @@ class Ayam extends BaseController
         echo view('HeaderBootstrap');
         echo view('SidebarBootstrap');
         echo view('Ayam/ListAyam', $data);
+        echo view('FooterBootstrap');
     }
 }

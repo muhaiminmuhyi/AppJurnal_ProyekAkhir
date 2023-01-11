@@ -7,7 +7,7 @@ class Pembelian extends BaseController
 {
     public function __construct()
     {
-        session_start();
+        $session = session();
         $this->PembelianModel = new PembelianModel();
         helper('rupiah');
         $this->db = db_connect();
@@ -44,6 +44,7 @@ class Pembelian extends BaseController
             echo view('HeaderBootstrap');
             echo view('SidebarBootstrap');
             echo view('Pembelian/inputBeli', $data);
+            echo view('FooterBootstrap');
         }else{
             $validation =  \Config\Services::validation();
             if (! $this->validate(
@@ -68,10 +69,13 @@ class Pembelian extends BaseController
                     'validation' => $this->validator,
                     'pembelian' => $this->PembelianModel->getBeliData()
                 ]);
+                echo view('FooterBootstrap');
             }else{
                 //maka input database
                 $hasil = $this->PembelianModel->inputBeli();
-                if($hasil->connID->affected_rows>0){
+                var_dump($hasil);
+                die;
+                if($hasil == true){
                     ?>
                     <script type="text/javascript">
                         alert("Sukses menambahkan Pembelian");
@@ -83,6 +87,7 @@ class Pembelian extends BaseController
                 echo view('HeaderBootstrap');
                 echo view('SidebarBootstrap');
                 echo view('Pembelian/ListBeli', $data);
+                echo view('FooterBootstrap');
             }
         }
 
@@ -99,6 +104,7 @@ class Pembelian extends BaseController
         echo view('HeaderBootstrap');
         echo view('SidebarBootstrap');
         echo view('Pembelian/ListBeli', $data);
+        echo view('FooterBootstrap');
     }
 
     public function detail_pmb()
@@ -207,6 +213,7 @@ class Pembelian extends BaseController
         echo view('HeaderBootstrap');
         echo view('SidebarBootstrap');
         echo view('Pembelian/Pembelian', $data);
+        echo view('FooterBootstrap');
     }
 
     //json encode untuk list bulan
@@ -229,5 +236,6 @@ class Pembelian extends BaseController
         echo view('HeaderBootstrap');
         echo view('SidebarBootstrap');
         echo view('Pembelian/LihatPembelian', $data);
+        echo view('FooterBootstrap');
     }
 }
