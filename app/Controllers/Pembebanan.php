@@ -16,7 +16,7 @@ class Pembebanan extends BaseController
 	{
         // //tambahkan pengecekan login
         // if(!isset($_SESSION['nama'])){
-        //     return redirect()->to(base_url('home')); 
+        //     return redirect()->to(base_url('login')); 
         // }
 
         if( !isset($_POST['nama']) and !isset($_POST['biaya']) and !isset($_POST['waktu']) ) {
@@ -87,7 +87,7 @@ class Pembebanan extends BaseController
 
     public function laporanbeban(){
         if(!isset($_SESSION['nama'])){
-            return redirect()->to(base_url('home')); 
+            return redirect()->to(base_url('login')); 
         }
         $data['tahun'] = $this->PembebananModel->getPeriodeTahun();
         echo view('HeaderBootstrap');
@@ -99,7 +99,7 @@ class Pembebanan extends BaseController
     //json encode untuk list bulan
     public function listbulan($tahun){
         if(!isset($_SESSION['nama'])){
-            return redirect()->to(base_url('home')); 
+            return redirect()->to(base_url('login')); 
         }
         //encode
         echo json_encode($this->PembebananModel->getPeriodeBulan($tahun));
@@ -108,7 +108,7 @@ class Pembebanan extends BaseController
     //proses lihat jurnal umum
     public function lihatbeban(){
         if(!isset($_SESSION['nama'])){
-            return redirect()->to(base_url('home')); 
+            return redirect()->to(base_url('login')); 
         }
         $data['pembebanan'] = $this->PembebananModel->getPembebanan($_POST['tahun'], $_POST['bulan']);
         $data['bulan'] = $_POST['bulan'];

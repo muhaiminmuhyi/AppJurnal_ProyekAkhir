@@ -77,6 +77,8 @@
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="<?= base_url('adminlte/dist/css/adminlte.min.css') ?>">
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+
 </head>
 <!--
 `body` tag options:

@@ -15,7 +15,7 @@ class Export extends BaseController
 {
     public function __construct()
     {
-        session_start();
+        $session = session();
         $this->ExportModel = new ExportModel();
         $this->PenjualanModel = new PenjualanModel();
         $this->PembelianModel = new PembelianModel();
@@ -28,7 +28,7 @@ class Export extends BaseController
     public function laporanbb()
     {
         if (!isset($_SESSION['nama'])) {
-            return redirect()->to(base_url('home'));
+            return redirect()->to(base_url('login'));
         }
         $data['jurnal'] = $this->ExportModel->getJurnalUmum($_POST['tahun'], $_POST['bulan']);
 
@@ -121,7 +121,7 @@ class Export extends BaseController
     public function laporanpnj()
     {
         if(!isset($_SESSION['nama'])){
-            return redirect()->to(base_url('home')); 
+            return redirect()->to(base_url('login')); 
         }
         $penjualan = $this->PenjualanModel->getPenjualan($_POST['tahun'], $_POST['bulan']);
         $data['bulan'] = $_POST['bulan'];
@@ -158,7 +158,7 @@ class Export extends BaseController
     public function laporanpmb()
     {
         if(!isset($_SESSION['nama'])){
-            return redirect()->to(base_url('home')); 
+            return redirect()->to(base_url('login')); 
         }
         $pembelian = $this->PembelianModel->getPembelian($_POST['tahun'], $_POST['bulan']);
         $data['bulan'] = $_POST['bulan'];
@@ -195,7 +195,7 @@ class Export extends BaseController
     public function laporanbeban()
     {
         if(!isset($_SESSION['nama'])){
-            return redirect()->to(base_url('home')); 
+            return redirect()->to(base_url('login')); 
         }
         $pembebanan = $this->PembebananModel->getPembebanan($_POST['tahun'], $_POST['bulan']);
         $data['bulan'] = $_POST['bulan'];
@@ -232,7 +232,7 @@ class Export extends BaseController
     public function laporanjurnal()
     {
         if (!isset($_SESSION['nama'])) {
-            return redirect()->to(base_url('home'));
+            return redirect()->to(base_url('login'));
         }
         $jurnal = $this->LaporanModel->getJurnalUmum($_POST['tahun'], $_POST['bulan']);
         $data['bulan'] = $_POST['bulan'];
@@ -287,7 +287,7 @@ class Export extends BaseController
     public function laporanlr()
     {
         if (!isset($_SESSION['nama'])) {
-            return redirect()->to(base_url('home'));
+            return redirect()->to(base_url('login'));
         }
 
         $data['bulan'] = $_POST['bulan'];
@@ -337,7 +337,7 @@ class Export extends BaseController
     public function pdfbb()
     {
         if (!isset($_SESSION['nama'])) {
-            return redirect()->to(base_url('home'));
+            return redirect()->to(base_url('login'));
         }
         $data['jurnal'] = $this->ExportModel->getJurnalUmum($_POST['tahun'], $_POST['bulan']);
 
@@ -367,7 +367,7 @@ class Export extends BaseController
     public function pdfpnj()
     {
         if(!isset($_SESSION['nama'])){
-            return redirect()->to(base_url('home')); 
+            return redirect()->to(base_url('login')); 
         }
         $data['penjualan'] = $this->PenjualanModel->getPenjualan($_POST['tahun'], $_POST['bulan']);
         $data['bulan'] = $_POST['bulan'];
@@ -384,7 +384,7 @@ class Export extends BaseController
     public function pdfpmb()
     {
         if(!isset($_SESSION['nama'])){
-            return redirect()->to(base_url('home')); 
+            return redirect()->to(base_url('login')); 
         }
         $data['pembelian'] = $this->PembelianModel->getPembelian($_POST['tahun'], $_POST['bulan']);
         $data['bulan'] = $_POST['bulan'];
@@ -401,7 +401,7 @@ class Export extends BaseController
     public function pdfbeban()
     {
         if(!isset($_SESSION['nama'])){
-            return redirect()->to(base_url('home')); 
+            return redirect()->to(base_url('login')); 
         }
         $data['pembebanan'] = $this->PembebananModel->getPembebanan($_POST['tahun'], $_POST['bulan']);
         $data['bulan'] = $_POST['bulan'];
@@ -418,7 +418,7 @@ class Export extends BaseController
     public function pdfjurnal()
     {
         if (!isset($_SESSION['nama'])) {
-            return redirect()->to(base_url('home'));
+            return redirect()->to(base_url('login'));
         }
         $data['jurnal'] = $this->LaporanModel->getJurnalUmum($_POST['tahun'], $_POST['bulan']);
         $data['bulan'] = $_POST['bulan'];
@@ -435,7 +435,7 @@ class Export extends BaseController
     public function pdflr()
     {
         if (!isset($_SESSION['nama'])) {
-            return redirect()->to(base_url('home'));
+            return redirect()->to(base_url('login'));
         }
 
         $data['bulan'] = $_POST['bulan'];

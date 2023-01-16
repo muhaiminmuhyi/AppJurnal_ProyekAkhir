@@ -10,7 +10,7 @@ class Laporan extends BaseController
 {
     public function __construct()
     {
-        session_start();
+        $session = session();
         $this->PembebananModel = new PembebananModel();
         $this->LaporanModel = new LaporanModel();
         helper('rupiah');
@@ -21,7 +21,7 @@ class Laporan extends BaseController
     public function lihatbeban()
     {
         if (!isset($_SESSION['nama'])) {
-            return redirect()->to(base_url('home'));
+            return redirect()->to(base_url('login'));
         }
 
         $data['beban'] = $this->PembebananModel->getListBeban();
@@ -35,19 +35,20 @@ class Laporan extends BaseController
     public function jurnalumum()
     {
         if (!isset($_SESSION['nama'])) {
-            return redirect()->to(base_url('home'));
+            return redirect()->to(base_url('login'));
         }
         $data['tahun'] = $this->LaporanModel->getPeriodeTahun();
         echo view('HeaderBootstrap');
         echo view('SidebarBootstrap');
         echo view('Laporan/Jurnal', $data);
+        echo view('FooterBootstrap');
     }
 
     //json encode untuk list bulan
     public function listbulan($tahun)
     {
         if (!isset($_SESSION['nama'])) {
-            return redirect()->to(base_url('home'));
+            return redirect()->to(base_url('login'));
         }
         //encode
         echo json_encode($this->LaporanModel->getPeriodeBulan($tahun));
@@ -57,7 +58,7 @@ class Laporan extends BaseController
     public function lihatjurnalumum()
     {
         if (!isset($_SESSION['nama'])) {
-            return redirect()->to(base_url('home'));
+            return redirect()->to(base_url('login'));
         }
         $data['jurnal'] = $this->LaporanModel->getJurnalUmum($_POST['tahun'], $_POST['bulan']);
         $data['bulan'] = $_POST['bulan'];
@@ -65,26 +66,28 @@ class Laporan extends BaseController
         echo view('HeaderBootstrap');
         echo view('SidebarBootstrap');
         echo view('Laporan/LihatJurnal', $data);
+        echo view('FooterBootstrap');
     }
 
     //buku besar
     public function bukubesar()
     {
         if (!isset($_SESSION['nama'])) {
-            return redirect()->to(base_url('home'));
+            return redirect()->to(base_url('login'));
         }
         $data['tahun'] = $this->LaporanModel->getPeriodeTahun();
         $data['namaakun'] = $this->LaporanModel->getNamaAkun();
         echo view('HeaderBootstrap');
         echo view('SidebarBootstrap');
         echo view('Laporan/BukuBesar', $data);
+        echo view('FooterBootstrap');
     }
 
     //proses lihat buku besar
     public function lihatbukubesar()
     {
         if (!isset($_SESSION['nama'])) {
-            return redirect()->to(base_url('home'));
+            return redirect()->to(base_url('login'));
         }
         $data['jurnal'] = $this->LaporanModel->getJurnalUmum($_POST['tahun'], $_POST['bulan']);
 
@@ -104,12 +107,13 @@ class Laporan extends BaseController
         echo view('HeaderBootstrap');
         echo view('SidebarBootstrap');
         echo view('Laporan/LihatBukuBesar', $data);
+        echo view('FooterBootstrap');
     }
 
     public function labarugi()
     {
         if (!isset($_SESSION['nama'])) {
-            return redirect()->to(base_url('home'));
+            return redirect()->to(base_url('login'));
         }
         $data['tahun'] = $this->LaporanModel->getPeriodeTahun();
 
@@ -119,13 +123,15 @@ class Laporan extends BaseController
         echo view('HeaderBootstrap');
         echo view('SidebarBootstrap');
         echo view('Laporan/LabaRugi', $data);
+        echo view('FooterBootstrap');
+
     }
 
     //proses lihat laba rugi
     public function lihatlabarugi()
     {
         if (!isset($_SESSION['nama'])) {
-            return redirect()->to(base_url('home'));
+            return redirect()->to(base_url('login'));
         }
 
         $data['bulan'] = $_POST['bulan'];
@@ -136,6 +142,8 @@ class Laporan extends BaseController
         echo view('HeaderBootstrap');
         echo view('SidebarBootstrap');
         echo view('Laporan/LihatLabaRugi', $data);
+        echo view('FooterBootstrap');
+
     }
     public function laba_rugi()
     {

@@ -7,6 +7,7 @@ class Pakai extends BaseController
 {
 	public function __construct()
     {
+        $session = session();
         //load kelas PakaiModel
         $this->PakaiModel = new PakaiModel();
     }
@@ -62,6 +63,8 @@ class Pakai extends BaseController
                 echo view('Pakai/InputPakai',[
                     'validation' => $this->validator,
                 ]);
+                echo view('FooterBootstrap');
+
 
             }else{
                 //blok ini adalah blok jika sukses, yaitu panggil method insertData()
@@ -79,6 +82,8 @@ class Pakai extends BaseController
                 echo view('HeaderBootstrap');
                 echo view('SidebarBootstrap');
                 echo view('Pakai/ListPakai', $data);
+                echo view('FooterBootstrap');
+
             }
         }
 	}
@@ -89,6 +94,8 @@ class Pakai extends BaseController
         echo view('HeaderBootstrap');
         echo view('SidebarBootstrap');
         echo view('Pakai/EditPakai', $data);
+        echo view('FooterBootstrap');
+
     }
 
     public function editPakaiproses(){
@@ -131,6 +138,8 @@ class Pakai extends BaseController
                 'validation' => $this->validator,
                 'pakai' => $this->PakaiModel->editData($no_pakai)
             ]);
+            echo view('FooterBootstrap');
+
 
         }
         else
@@ -148,6 +157,8 @@ class Pakai extends BaseController
             echo view('HeaderBootstrap');
             echo view('SidebarBootstrap');
             echo view('Pakai/ListPakai', $data);
+            echo view('FooterBootstrap');
+
         }    
     }
 
@@ -164,5 +175,7 @@ class Pakai extends BaseController
         echo view('HeaderBootstrap');
         echo view('SidebarBootstrap');
         echo view('Pakai/ListPakai', $data);
+        echo view('FooterBootstrap');
+
     }
 }

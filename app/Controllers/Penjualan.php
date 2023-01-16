@@ -17,7 +17,7 @@ class Penjualan extends BaseController
 	{
         // //tambahkan pengecekan login
         // if(!isset($_SESSION['nama'])){
-        //     return redirect()->to(base_url('home')); 
+        //     return redirect()->to(base_url('login')); 
         // }
 
         if(!isset($_POST['harga_jual']) and !isset($_POST['tanggal'])) {
@@ -204,8 +204,9 @@ class Penjualan extends BaseController
 
     public function laporanpnj(){
         if(!isset($_SESSION['nama'])){
-            return redirect()->to(base_url('home')); 
+            return redirect()->to(base_url('login')); 
         }
+        // print($_SESSION['nama']);
         $data['tahun'] = $this->PenjualanModel->getPeriodeTahun();
         echo view('HeaderBootstrap');
         echo view('SidebarBootstrap');
@@ -216,7 +217,7 @@ class Penjualan extends BaseController
     //json encode untuk list bulan
     public function listbulan($tahun){
         if(!isset($_SESSION['nama'])){
-            return redirect()->to(base_url('home')); 
+            return redirect()->to(base_url('login')); 
         }
         //encode
         echo json_encode($this->PenjualanModel->getPeriodeBulan($tahun));
@@ -225,7 +226,7 @@ class Penjualan extends BaseController
     //proses lihat jurnal umum
     public function lihatpnj(){
         if(!isset($_SESSION['nama'])){
-            return redirect()->to(base_url('home')); 
+            return redirect()->to(base_url('login')); 
         }
         $data['penjualan'] = $this->PenjualanModel->getPenjualan($_POST['tahun'], $_POST['bulan']);
         $data['bulan'] = $_POST['bulan'];
