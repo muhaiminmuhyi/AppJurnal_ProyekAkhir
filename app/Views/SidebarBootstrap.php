@@ -119,7 +119,7 @@
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon fas fa-server"></i>
               <p>
                 Master Data
                 <i class="right fas fa-angle-left"></i>
@@ -166,7 +166,7 @@
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon fas fa-dollar"></i>
               <p>
                 Transaksi
                 <i class="right fas fa-angle-left"></i>
