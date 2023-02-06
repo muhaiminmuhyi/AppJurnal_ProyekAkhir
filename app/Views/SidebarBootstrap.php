@@ -166,7 +166,7 @@
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-dollar"></i>
+              <i class="nav-icon fas fa-credit-card"></i>
               <p>
                 Transaksi
                 <i class="right fas fa-angle-left"></i>
@@ -195,7 +195,7 @@
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon fas fa-archive"></i>
               <p>
                 Laporan
                 <i class="right fas fa-angle-left"></i>
